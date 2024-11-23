@@ -29,7 +29,7 @@ pipeline {
 
         stage('Tag and Push') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-auth', usernameVariable: 'riya2207', passwordVariable: 'Pooja@13379')]) {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-auth', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     script {
                         def buildId = env.BUILD_ID // Unique ID for tagging
                         sh """
