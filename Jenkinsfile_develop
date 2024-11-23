@@ -23,6 +23,7 @@ pipeline {
             steps {
                 sh 'curl -I localhost:8081'
             }
+        }
 
        
     }
