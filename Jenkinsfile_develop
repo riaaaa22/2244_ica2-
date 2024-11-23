@@ -13,49 +13,13 @@ pipeline {
             }
         }
 
-        stage('Listing files') {
+        stage('built and run') {
             steps {
-                sh 'ls -l'
+                sh 'docker build -t Image1 .'
+                sh 'docker run -d -p 8081:80 Image1'
             }
         }
 
-        stage('Build and Push') {
-            steps {
-                echo 'Building..'
-                dir('app') {
-                    withCredentials([usernamePassword(credentialsId: 'dockerhub-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh '''
-                            docker build -t riya2207/todo-list-app:v2 .
-                            docker login -u ${USERNAME} -p ${PASSWORD}
-                            docker push riya2207/todo-list-app:v2
-                        '''
-                    }
-                }
-            }
-        }
-
-        stage('Deploy container') {
-            steps {
-                echo "Deploying container..."
-                sh '''
-                    docker stop todo-app || true && docker rm todo-app || true
-                    docker run --name todo-app -d -p 80:81 riya2207/todo-list-app:v2
-                '''
-            }
-        }
-
-        // Optional: Deploy container into another application server
-        // Uncomment this block if needed and ensure SSH and credentials are properly configured
-        // stage('Deploy container into App server') {
-        //     steps {
-        //         sshagent(['ssh-key']) {
-        //             sh '''
-        //                 ssh -tt root@<APP_HOST_VM_IP> -o StrictHostKeyChecking=no "docker pull riya2207/todo-list-app:v2"
-        //                 ssh -tt root@<APP_HOST_VM_IP> -o StrictHostKeyChecking=no "docker stop todo-app || true && docker rm todo-app || true"
-        //                 ssh -tt root@<APP_HOST_VM_IP> -o StrictHostKeyChecking=no "docker run --name todo-app -d -p 9000:3000 riya2207/todo-list-app:v2"
-        //             '''
-        //         }
-        //     }
-        // }
+       
     }
 }
