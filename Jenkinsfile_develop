@@ -20,8 +20,13 @@ pipeline {
                 sh 'docker run --name website -d -p 8081:80 image1'
             }
         }
+
+         stage('testing'){
+            steps {
+                sh 'curl -I localhost:8081'
+            }
+        }
        
 
-       
     }
 }
