@@ -13,7 +13,7 @@ pipeline {
             }
         }
 
-        stage('built and run') {
+        stage('Build and Run') {
             steps {
                 sh 'docker build -t image1 .'
                 sh 'docker stop website || true && docker rm website || true'
@@ -21,12 +21,27 @@ pipeline {
             }
         }
 
-         stage('testing'){
+        stage('Testing') {
             steps {
                 sh 'curl -I localhost:8081'
             }
         }
-       
 
+        stage('Tag and Push') {
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-auth', usernameVariable: 'riya2207', passwordVariable: 'Pooja@13379')]) {
+                    script {
+                        def buildId = env.BUILD_ID // Unique ID for tagging
+                        sh """
+                            docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+                            docker tag image1 riya2207/2244_ica2:latest
+                            docker tag image1 riya2207/2244_ica2:develop-${buildId}
+                            docker push riya2207/2244_ica2:latest
+                            docker push riya2207/2244_ica2:develop-${buildId}
+                        """
+                    }
+                }
+            }
+        }
     }
 }
