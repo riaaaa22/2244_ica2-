@@ -32,13 +32,13 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'dockerhub-auth', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     script {
                         def buildId = env.BUILD_ID // Unique ID for tagging
-                        sh ""
+                        sh """
                             docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
                             docker tag image1 riya2207/2244_ica2:latest
                             docker tag image1 riya2207/2244_ica2:develop-${buildId}
                             docker push riya2207/2244_ica2:latest
                             docker push riya2207/2244_ica2:develop-${buildId}
-                        ""
+                        """
                     }
                 }
             }
