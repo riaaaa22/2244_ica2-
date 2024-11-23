@@ -33,7 +33,7 @@ pipeline {
                     script {
                         def buildId = env.BUILD_ID // Unique ID for tagging
                         sh ""
-                            docker login -u $(DOCKER_USERNAME) -p $(DOCKER_PASSWORD)
+                            docker login -u ${DOCKER_USERNAME} -p ${DOCKER_PASSWORD}
                             docker tag image1 riya2207/2244_ica2:latest
                             docker tag image1 riya2207/2244_ica2:develop-${buildId}
                             docker push riya2207/2244_ica2:latest
