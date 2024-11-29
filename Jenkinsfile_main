@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('Pull Image') {
+            steps {
+                sh 'docker pull riya2207/2244_ica2:latest'
+            }
+        }
+        stage('Run Container') {
+            steps {
+                sh 'docker run -d -p 8082:80 riya2207/2244_ica2:latest'
+            }
+        }
+        stage('Test Website') {
+            steps {
+                sh 'curl -I http://localhost:8082'
+}
+}
+}
+}
