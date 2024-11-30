@@ -13,7 +13,9 @@ pipeline {
         }
         stage('Run Container') {
             steps {
-                sh 'docker run -d -p 8082:80 riya2207/2244_ica2:latest'
+                sh 'docker stop image1 || true && docker rm image1 || true'
+                sh 'docker run --name image1 -d -p 8082:80 riya2207/2244_ica2:latest
+
             }
         }
         stage('Test Website') {
